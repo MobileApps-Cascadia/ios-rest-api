@@ -8,20 +8,29 @@
 
 import UIKit
 
-    let DomainURL = "http://216.186.69.45/services/device/"
+let DomainURL = "http://216.186.69.45/services/device/"
+
+class User : Codable{
     
-    class User {
-        
-        static func fetch(){
-            let URLstring = DomainURL + "users/"
-            if let url = URL.init(string: URLstring){
-                let task = URLSession.shared.dataTask(with: url, completionHandler:
-                    //TODO: Add closure
-                )
-                task.resume()
-            }
+    var UserID : String?
+    var FirstName : String?
+    var LastName : String?
+    var PhoneNumber : String?
+    var SID : String?
+    
+    static func fetch(withID id :Int){
+        let URLstring = DomainURL + "users/UserId/\(id)"
+        if let url = URL.init(string: URLstring){
+            let task = URLSession.shared.dataTask(with:url, completionHandler: {(data,URLResponse,error) in
+                print(String.init( data: data! , encoding: .ascii) ?? "no data")
+                if let newUser = try? JSONDecoder().decode(User.self, from: data!){
+                    print (newUser.UserID ?? "no url")
+                }
+            })
+            task.resume()
         }
     }
+}
 
 class ViewController: UIViewController {
     
@@ -31,9 +40,10 @@ class ViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        User.fetch()
+        User.fetch(withID : 1)
     }
-
-
+    
+    
 }
+
 
