@@ -10,17 +10,33 @@ import UIKit
 
     let DomainURL = "http://216.186.69.45/services/device/"
     
-    class User {
-        
+class User : Codable{
+    
+    
         static func fetch(){
             let URLstring = DomainURL + "users/"
             if let url = URL.init(string: URLstring){
-                let task = URLSession.shared.dataTask(with: url, completionHandler:
+                let task = URLSession.shared.dataTask(with: url, completionHandler:{(dataFromApi,urlResponse,error) in
+                    print(String.init(data: dataFromApi!, encoding: .ascii) ?? "no data")
+                })
                     //TODO: Add closure
-                )
+                
                 task.resume()
             }
         }
+    
+    static func fetch(withId: Int){
+        //add the \(UserID) after the users to get the specific UserID
+        let URLstring = DomainURL + "users/\(withId)"
+        if let url = URL.init(string: URLstring){
+            let task = URLSession.shared.dataTask(with: url, completionHandler:{(dataFromApi,urlResponse,error) in
+                print(String.init(data: dataFromApi!, encoding: .ascii) ?? "no data")
+            })
+                //TODO: Add closure
+            
+            task.resume()
+        }
+    }
     }
 
 class ViewController: UIViewController {
@@ -31,7 +47,9 @@ class ViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        User.fetch(withId: 7)
         User.fetch()
+        
     }
 
 
