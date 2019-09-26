@@ -12,6 +12,11 @@ import UIKit
     
 class User : Codable{
     
+    var UserID: String?
+    var FirstName: String?
+    var LastName: String?
+    var PhoneNumber: String?
+    var SID: String?
     
         static func fetch(){
             let URLstring = DomainURL + "users/"
@@ -31,13 +36,19 @@ class User : Codable{
         if let url = URL.init(string: URLstring){
             let task = URLSession.shared.dataTask(with: url, completionHandler:{(dataFromApi,urlResponse,error) in
                 print(String.init(data: dataFromApi!, encoding: .ascii) ?? "no data")
+                //using Decodable
+                if let newUser = try? JSONDecoder().decode(User.self, from: dataFromApi!){
+                    print(newUser.FirstName ?? "no data" )
+                    
+                }
             })
                 //TODO: Add closure
             
             task.resume()
         }
     }
-    }
+    
+}
 
 class ViewController: UIViewController {
     
