@@ -9,14 +9,19 @@
 import UIKit
 
     let DomainURL = "http://216.186.69.45/services/device/"
-    
+
+
+
     class User {
         
         static func fetch(){
-            let URLstring = DomainURL + "users/"
+            let URLstring = DomainURL + "users/1"
             if let url = URL.init(string: URLstring){
                 let task = URLSession.shared.dataTask(with: url, completionHandler:
-                    //TODO: Add closure
+                {(dataFromApi,urlResponse, error)  in
+                    print(String.init( data: dataFromApi!, encoding: .ascii) ?? "no data")
+             }
+               
                 )
                 task.resume()
             }
