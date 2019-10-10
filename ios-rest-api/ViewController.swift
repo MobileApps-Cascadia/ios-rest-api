@@ -8,24 +8,25 @@
 
 import UIKit
 
-    let DomainURL = "http://216.186.69.45/services/device/"
+    let DomainURL = "http://216.186.69.45/services/hidenseek/"
 
 
 
     class User {
         
-        static func fetch(){
-            let URLstring = DomainURL + "users/1"
+        
+        static func fetch(withID id:Int){
+            let URLstring = DomainURL + "matches/\(id)"
             if let url = URL.init(string: URLstring){
                 let task = URLSession.shared.dataTask(with: url, completionHandler:
-                {(dataFromApi,urlResponse, error)  in
-                    print(String.init( data: dataFromApi!, encoding: .ascii) ?? "no data")
-             }
-               
-                )
+                {(dataFromAPI, response, error) in
+                    print(String.init(data:dataFromAPI!, encoding: .ascii) ?? "no data")
+                })
                 task.resume()
             }
         }
+        
+        
     }
 
 class ViewController: UIViewController {
@@ -36,7 +37,7 @@ class ViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        User.fetch()
+        User.fetch(withID: 1210)
     }
 
 
