@@ -16,8 +16,10 @@ import UIKit
             let URLstring = DomainURL + "users/"
             if let url = URL.init(string: URLstring){
                 let task = URLSession.shared.dataTask(with: url, completionHandler:
+                {(data, urlResponse, error) in //this is the closure, note the params will be filled by the URLSession response
+                    print(String.init(data: data! , encoding: .ascii) ?? "no data")
                     //TODO: Add closure
-                )
+                })
                 task.resume()
             }
         }
