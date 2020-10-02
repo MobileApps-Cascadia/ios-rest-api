@@ -8,16 +8,26 @@
 
 import UIKit
 
-    let DomainURL = "http://216.186.69.45/services/device/"
+// the ip addressed api does not work. using lynda video's api instead.
+    //let DomainURL = "http://216.186.69.45/services/device/"
+    let DomainURL = "https://www.orangevalleycaa.org/api/"
     
-    class User {
+class Music : Codable{
+    
+    var id : String?
+    var music_url : String?
+    var name : String?
+    var description : String?
         
-        static func fetch(){
-            let URLstring = DomainURL + "users/"
+        static func fetch(withID id: Int){
+            let URLstring = DomainURL + "music/id\(id)" //users/id\(id)
             if let url = URL.init(string: URLstring){
-                let task = URLSession.shared.dataTask(with: url, completionHandler:
-                    //TODO: Add closure
-                )
+                let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+                    print(String.init(data: data!, encoding: .ascii) ?? "no data")
+                    if let newMusic = try? JSONDecoder().decode(Music.self, from: data!) {
+                        print (newMusic.music_url ?? "no url")
+                    }
+                })
                 task.resume()
             }
         }
@@ -30,10 +40,10 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        User.fetch()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Music.fetch(withID: 1)
     }
-
 
 }
 
