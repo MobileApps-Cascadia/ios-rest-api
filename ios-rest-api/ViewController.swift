@@ -20,7 +20,7 @@ class Music : Codable{
     var description : String?
         
         static func fetch(withID id: Int){
-            let URLstring = DomainURL + "music/id\(id)" //users/id\(id)
+            let URLstring = DomainURL + "music/id/\(id)" //users/id\(id)
             if let url = URL.init(string: URLstring){
                 let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
                     print(String.init(data: data!, encoding: .ascii) ?? "no data")
