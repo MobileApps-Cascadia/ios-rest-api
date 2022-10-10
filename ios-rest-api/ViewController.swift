@@ -8,7 +8,7 @@
 
 import UIKit
 
-    let DomainURL = "http://216.186.69.45/services/device/"
+    let DomainURL = "https://mockend.com/MikeTheGreat/ios-rest-api-placeholder-data/"
     
 class User: Codable {
     var UserID: String?
