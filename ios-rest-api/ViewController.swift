@@ -12,12 +12,13 @@ import UIKit
     
     class User {
         
-        static func fetch(){
-            let URLstring = DomainURL + "users/"
+        static func fetch(withID id: Int){
+            let URLstring = DomainURL + "users/1"
             if let url = URL.init(string: URLstring){
-                let task = URLSession.shared.dataTask(with: url, completionHandler:
-                    //TODO: Add closure
-                )
+                let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+                    print(String.init(data: data!, encoding: .ascii) ?? "no data")
+                
+                })
                 task.resume()
             }
         }
@@ -31,7 +32,7 @@ class ViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        User.fetch()
+        User.fetch(withID : 1)
     }
 
 
