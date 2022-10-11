@@ -10,13 +10,21 @@ import UIKit
 
     let DomainURL = "https://mockend.com/MikeTheGreat/ios-rest-api-placeholder-data/"
     
-    class User {
+class User: Codable {
         
-        static func fetch(){
-            let URLstring = DomainURL + "users/"
+        static func fetch(withID id : Int) {
+            let URLstring = DomainURL + "users/1"
             if let url = URL.init(string: URLstring){
-                let task = URLSession.shared.dataTask(with: url, completionHandler:
-                    //TODO: Add closure
+                let task = URLSession.shared.dataTask(with: url, completionHandler: {
+                    (data, response, error) -> Void in
+                        if let userData = data {
+                            let asciiData = String.init(data: userData, encoding: .ascii)
+                            print(asciiData)
+                            //if let newUser = JSONDecoder().decode( {
+                            //    print (newUser)
+                            //}
+                        }
+                }
                 )
                 task.resume()
             }
@@ -31,9 +39,6 @@ class ViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        User.fetch()
+        User.fetch(withID: 1)
     }
-
-
 }
-
