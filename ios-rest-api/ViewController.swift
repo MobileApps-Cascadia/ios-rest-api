@@ -17,12 +17,11 @@ class User: Codable {
             if let url = URL.init(string: URLstring){
                 let task = URLSession.shared.dataTask(with: url, completionHandler: {
                     (data, response, error) -> Void in
-                        if let userData = data {
-                            let asciiData = String.init(data: userData, encoding: .ascii)
-                            print(asciiData)
-                            //if let newUser = JSONDecoder().decode( {
-                            //    print (newUser)
-                            //}
+                    print(String.init(data: data!, encoding: .ascii) ?? "no data")
+
+                    if let newUser = try? JSONDecoder().decode(User.self, from: data!) {
+                        print(newUser)
+
                         }
                 }
                 )
