@@ -8,19 +8,40 @@
 
 import UIKit
 
-    let DomainURL = "https://mockend.com/MikeTheGreat/ios-rest-api-placeholder-data/"
+let DomainURL = "https://mockend.com/MikeTheGreat/ios-rest-api-placeholder-data/"
+
+class User : Codable {
+     let id: Int?
+     let firstName: String?
+     let lastName: String?
+     let age: Int?
+
+         enum CodingKeys: String, CodingKey {
+             case id
+             case firstName = "FirstName"
+             case lastName = "LastName"
+             case age
+         }
     
-class User: Codable {
-        
-        static func fetch(withID id : Int) {
-            let URLstring = DomainURL + "users/1"
+        static func fetch(){
+             let URLstring = DomainURL + "users"
+             if let url = URL.init(string: URLstring){
+                 let task = URLSession.shared.dataTask(with: url, completionHandler: {
+                     (data, response, error) in
+                     print(String(data: data!, encoding: .utf8) ?? "no data")
+                 })
+                 task.resume()
+             }
+        }
+    
+        static func fetch(withID: Int) {
+            let URLstring = DomainURL + "users/\(String(withID))"
             if let url = URL.init(string: URLstring){
                 let task = URLSession.shared.dataTask(with: url, completionHandler: {
                     (data, response, error) -> Void in
                     print(String.init(data: data!, encoding: .ascii) ?? "no data")
-
                     if let newUser = try? JSONDecoder().decode(User.self, from: data!) {
-                        print(newUser)
+                    print(newUser.firstName ?? "No first name present" as Any)
 
                         }
                 }
@@ -39,5 +60,7 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         User.fetch(withID: 1)
+        User.fetch()
+        User.fetch(withID: 2)
     }
 }
